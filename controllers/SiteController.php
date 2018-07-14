@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Parse;
+use app\models\ParseModel;
+use app\models\Search;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -9,6 +12,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+
 
 class SiteController extends Controller
 {
@@ -61,7 +65,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if(Yii::$app->user->isGuest){
+            return $this->redirect('/site/login');
+        }
+        $model = new ParseModel();
+        $url = 'https://realt.by/sale/offices/';
+        if(!empty(Yii::$app->request->post('ParseModel')['pages'])){
+            $start = 0;
+            Parse::deleteAll();
+            $end = Yii::$app->request->post('ParseModel')['pages'];
+
+            $news = ParseModel::parse($url, $start, $end);
+
+
+            return $this->redirect('/search/index');
+        }
+
+        return $this->render('index', [ 'model' => $model]);
     }
 
     /**
