@@ -58,6 +58,6 @@ class ParseModel extends Model
              }
 
 
-        return $document;
+        return 'worked';
     }
 }

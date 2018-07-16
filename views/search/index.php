@@ -40,12 +40,19 @@ $this->params['breadcrumbs'][] = $this->title;
         echo 'Конечная цена: '.Yii::$app->request->post('Search')['price_end'];
     }?>
     <?= GridView::widget([
+
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
             'title:ntext',
-            'content:ntext',
+            /*'content:ntext',*/
+
+            [
+                'attribute' => 'content',
+                'contentOptions' => ['style' => 'width:200px; white-space: normal;'],
+            ],
             'price:ntext',
             'phone',
             /*'summ',*/
